@@ -1063,7 +1063,9 @@ main{overflow-x:clip}
 /* Папка с фото и видео.
    "" — файлы лежат рядом с index.html (папки home/, projects/, timelapse/ …)
    Можно указать адрес сайта, например "https://yarkomp-hub.github.io/doppio/" */
-const ASSET = "";
+/* Файл сам понимает, где лежит: в папке v2 берёт фото из корня репозитория (../), в корне берёт рядом */
+const ASSET = /\/v2\/(index\.html)?$/.test(location.pathname) ? "../" : "";
+try{ document.querySelector('link[rel="icon"]').href = ASSET + "logo/favicon.svg"; }catch(e){}
 
 /* ЗАМЕНИТЬ: контакты. Все данные для связи правятся только здесь */
 const CONTACTS = {
