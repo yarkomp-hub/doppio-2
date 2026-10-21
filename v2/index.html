@@ -408,6 +408,165 @@ main{overflow-x:clip}
 .lb__nav--next{left:auto;right:clamp(8px,2vw,32px)}
 .lb__cap{text-align:center;padding:12px var(--margin) calc(env(safe-area-inset-bottom) + 20px);font-family:var(--f-head);font-size:20px}
 
+/* ==========================================================================
+   ЭКРАН 1:1: каждый раздел по высоте помещается в окно браузера при масштабе 100%.
+   Размеры фото и крупных заголовков считаются от высоты экрана (vh).
+   ========================================================================== */
+:root{
+  --t-h1:clamp(42px,min(1.8rem + 4.6vw,12vh),120px);
+  --t-h2:clamp(32px,min(1.6rem + 2.6vw,7.4vh),72px);
+  --t-h3:clamp(24px,min(1.3rem + 1.2vw,4.6vh),42px);
+  --t-h4:clamp(20px,min(1.15rem + .6vw,3.4vh),30px);
+}
+.screen{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--header-h) + clamp(16px,3vh,40px)) clamp(24px,4vh,56px)}
+.screen > .wrap{width:100%}
+.shead{margin-bottom:clamp(24px,4.5vh,72px)}
+.shead__side{grid-column:9 / span 4;display:grid;gap:var(--s3);justify-items:start}
+.shead__side p{margin:0;color:var(--muted);grid-column:auto}
+
+/* обложка: заголовок, цифры, фото целиком (не обрезается) */
+.hero{padding-top:calc(var(--header-h) + clamp(24px,5vh,72px))}
+.hero__top{padding-bottom:clamp(32px,5vh,64px)}
+.hero__main{grid-column:1 / span 8}
+.hero h1{grid-column:auto}
+.hero__side{grid-column:9 / span 4;align-self:end}
+.facts{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:0 clamp(16px,2.2vw,36px);margin:clamp(24px,4.5vh,56px) 0 0}
+.facts > div{padding-left:var(--s4);border-left:1px solid var(--line-strong)}
+.facts dt{font-family:var(--f-head);font-weight:300;font-size:clamp(32px,min(1.2rem + 1.8vw,6vh),56px);line-height:1;white-space:nowrap}
+.facts > div:last-child dt{font-size:.8em;font-size:clamp(26px,min(1rem + 1.4vw,4.8vh),44px);padding-top:.15em}
+.facts dd{margin:var(--s2) 0 0;max-width:19ch;font-size:13px;line-height:1.45;color:var(--muted)}
+.hero__img{height:auto}
+.hero__img img{height:auto;aspect-ratio:3/2;object-position:50% 50%}
+
+/* философия: как в журнале, утверждение справа, цитата слева внизу */
+.mission.screen{min-height:0;padding-block:clamp(72px,14vh,180px)}
+.mission__grid{align-items:end}
+.mission__stmt{grid-column:7 / span 6;grid-row:1;font-size:clamp(26px,min(1rem + 1.8vw,5vh),46px);line-height:1.25}
+.mission__quote{grid-column:1 / span 5;grid-row:1;margin:0;align-self:end}
+.mission__quote blockquote{font-size:clamp(18px,min(.9rem + .5vw,2.8vh),24px)}
+
+/* три роли света: компактный триптих, фото одного уровня */
+.kelly__wrap{max-width:1240px}
+.kelly__img{aspect-ratio:auto;height:clamp(160px,calc(100vh - 600px),500px);height:clamp(160px,calc(100svh - 600px),500px)}
+.kelly .shead p{padding-left:var(--s5);border-left:1px solid var(--accent)}
+.kelly__item:nth-child(n){margin-top:0}
+.kelly__item h3{margin-top:var(--s3);font-size:clamp(22px,3.6vh,34px)}
+.kelly__item p{margin-top:var(--s3);font-size:var(--t-sm);line-height:1.55}
+
+/* таймлапсы: во всю ширину, стрелки по бокам, подпись внизу */
+.laps.screen{padding-bottom:clamp(16px,3vh,40px)}
+.laps__stage{width:100%;background:var(--ink)}
+#lapsSlides{aspect-ratio:auto;height:clamp(240px,calc(100vh - var(--header-h) - 340px),88vh);height:clamp(240px,calc(100svh - var(--header-h) - 340px),88vh);max-height:none}
+.laps__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:56px;height:56px;display:grid;place-items:center;background:rgba(255,255,255,.88);color:var(--ink);transition:background-color var(--dur),color var(--dur)}
+.laps__arrow:hover{background:var(--ink);color:var(--white)}
+.laps__arrow svg{width:20px;height:20px}
+.laps__arrow--prev{left:max(16px,2vw)}
+.laps__arrow--next{right:max(16px,2vw)}
+.laps__stage .laps__bar{position:absolute;left:0;right:0;bottom:0;margin:0;z-index:3;background:rgba(255,255,255,.25)}
+.laps__stage .laps__bar i{background:var(--white)}
+.laps__ui{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s5);margin-top:var(--s4)}
+.laps__cap{margin:0}
+
+/* направления: высота карточек от экрана */
+.dir__card{aspect-ratio:auto;height:clamp(200px,calc(100vh - 500px),560px);height:clamp(200px,calc(100svh - 500px),560px)}
+.dir:nth-child(even){margin-top:clamp(16px,4vh,48px)}
+.dir h3{margin-top:var(--s3);font-size:clamp(22px,3.4vh,34px)}
+.dirs__more{display:none}
+
+/* услуги: компактное оглавление */
+.acc__btn{padding:clamp(6px,1.1vh,18px) 0;min-height:48px}
+.acc__title{font-size:clamp(20px,3.2vh,34px)}
+.acc__num{font-size:clamp(18px,2.8vh,26px)}
+.acc__icon{width:40px;height:40px}
+.acc__content{padding-bottom:clamp(12px,2vh,28px)}
+.acc__content figure .fr{height:min(14vh,160px);aspect-ratio:3/2;width:auto;max-width:100%}
+.services__after{margin-top:clamp(16px,2.6vh,40px)}
+.services__after p{font-size:clamp(20px,3vh,32px);max-width:36ch}
+.services .shead{margin-bottom:clamp(16px,3vh,48px)}
+
+/* нам доверяют и контакты */
+.client{padding:clamp(18px,3vh,44px) clamp(36px,4vw,72px)}
+.clist{margin-top:clamp(20px,4vh,48px);gap:clamp(12px,2vh,24px)}
+.social{margin-top:clamp(16px,3vh,32px)}
+.form{gap:clamp(16px,3vh,32px) var(--s5)}
+.field textarea{min-height:clamp(70px,10vh,110px)}
+
+/* о нас: открытие и портреты в один экран */
+.team__head{margin-bottom:clamp(16px,3.5vh,48px);align-items:end}
+.team__head h1{margin-top:var(--s2);font-size:clamp(40px,min(1.6rem + 3.4vw,9vh),96px);font-weight:300}
+.team__head .lead{grid-column:9 / span 4;margin:0;color:var(--muted)}
+.duo{--ph:clamp(220px,calc(100vh - var(--header-h) - 470px),560px);--ph:clamp(220px,calc(100svh - var(--header-h) - 470px),560px)}
+.person{width:max(calc(var(--ph) * .75),300px)}
+.person__img{width:100%}
+.longread__body{grid-column:5 / span 8;max-width:none;columns:2;column-gap:var(--gap);font-size:clamp(15px,2vh,17px)}
+.longread__body .lead{font-size:clamp(18px,2.6vh,22px)}
+.acad figure{justify-self:end}
+.acad .fr{height:clamp(280px,calc(100vh - var(--header-h) - 170px),760px);height:clamp(280px,calc(100svh - var(--header-h) - 170px),760px);aspect-ratio:4/5;width:auto;max-width:100%}
+.strip{grid-auto-columns:min(30vw,calc((100vh - 470px) * 4 / 3))}
+.exp li{padding:clamp(14px,2.2vh,32px) 0}
+.exp b{font-size:clamp(24px,4vh,40px)}
+
+/* страница проекта: фото и заголовок в первом экране */
+.pp__heroimg{height:clamp(280px,calc(100vh - var(--header-h) - 240px),860px);height:clamp(280px,calc(100svh - var(--header-h) - 240px),860px)}
+.pp__head h1{font-size:clamp(40px,min(1.6rem + 3.4vw,9vh),96px)}
+
+/* невысокие экраны ноутбуков */
+@media (max-height:780px) and (min-width:768px){
+  .acc__content p{font-size:15px;line-height:1.5}
+  .services .shead{margin-bottom:12px}
+  .services .shead p{font-size:15px;line-height:1.5}
+  .services__after{margin-top:12px}
+}
+/* ==========================================================================
+   ОБЛОЖКА: фото на весь экран, тексты прямо на фото, без плашек.
+   Читаемость даёт мягкое затемнение слева и снизу.
+   ========================================================================== */
+.hero{position:relative;isolation:isolate;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(var(--header-h) + 32px) 0 clamp(28px,5vh,64px);color:var(--white);background:var(--ink)}
+.hero__fig{position:absolute;inset:0;z-index:-1;margin:0}
+.hero__fig::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(20,11,8,.72) 0%,rgba(20,11,8,.42) 38%,rgba(20,11,8,0) 66%),linear-gradient(0deg,rgba(20,11,8,.78) 0%,rgba(20,11,8,.3) 30%,rgba(20,11,8,0) 52%)}
+.hero__img,.hero__img img{height:100%;width:100%}
+.hero__img img{aspect-ratio:auto;object-fit:cover;object-position:60% 58%}
+.hero__fig .cap{position:absolute;right:var(--margin);top:calc(var(--header-h) + 16px);z-index:1;margin:0;color:rgba(255,255,255,.82);text-shadow:0 1px 10px rgba(0,0,0,.5)}
+.hero__fig .cap b{color:var(--white)}
+.hero__top{display:flex;flex-direction:column;align-items:stretch;gap:clamp(32px,7vh,96px);padding-bottom:0}
+.hero__main{max-width:min(860px,62vw)}
+.hero h1{color:var(--white);text-shadow:0 2px 28px rgba(0,0,0,.35)}
+.hero__sub{margin:clamp(16px,2.6vh,28px) 0 0;max-width:46ch;color:rgba(255,255,255,.92);text-shadow:0 1px 16px rgba(0,0,0,.45)}
+.hero__bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s6);flex-wrap:wrap}
+.hero .facts{margin:0}
+.hero .facts > div{border-left-color:rgba(255,255,255,.45)}
+.hero .facts dt{color:var(--white)}
+.hero .facts dd{color:rgba(255,255,255,.86)}
+.hero .facts dt,.hero .facts dd{text-shadow:0 1px 14px rgba(0,0,0,.5)}
+.btn--light{background:var(--white);color:var(--ink)}
+.btn--light:hover{background:var(--accent);color:var(--white)}
+
+/* таймлапсы: компактная шапка и подпись, видео выше */
+.laps .shead{margin-bottom:clamp(12px,2vh,24px);align-items:end}
+.laps .shead .kicker{display:none}
+.laps .shead h2{font-size:clamp(28px,min(1.2rem + 1.6vw,5vh),52px)}
+.laps .shead p{font-size:var(--t-sm);line-height:1.5}
+.laps.screen{padding-block:calc(var(--header-h) + clamp(12px,2vh,24px)) clamp(10px,1.6vh,20px)}
+#lapsSlides{height:clamp(260px,calc(100vh - var(--header-h) - 185px),92vh);height:clamp(260px,calc(100svh - var(--header-h) - 185px),92vh)}
+.laps__ui{margin-top:clamp(8px,1.4vh,14px)}
+.laps__cap .t{font-size:clamp(18px,2.6vh,24px)}
+.laps__cap .o{margin-top:2px}
+
+/* философия компактнее; триптих по ширине страницы */
+.mission__stmt{font-size:clamp(22px,min(.9rem + 1.3vw,3.8vh),36px);line-height:1.3}
+.kelly__wrap{max-width:var(--maxw)}
+
+/* направления: зигзаг, у нечётных подпись сверху, у чётных снизу */
+.dirs__grid{align-items:stretch}
+.dir{display:flex;flex-direction:column}
+.dir:nth-child(even){margin-top:0}
+.dir:nth-child(odd) .dir__card{order:3}
+.dir:nth-child(odd) h3{order:1;margin:0}
+.dir:nth-child(odd) p{order:2;margin:var(--s1) 0 var(--s3)}
+.dir__card{height:clamp(220px,calc(100vh - 470px),600px);height:clamp(220px,calc(100svh - 470px),600px)}
+
+.is-entering{animation:pageIn .7s var(--ease) both}
+
 /* ---------- наезд блоков: следующий поднимается снизу и накрывает предыдущий ---------- */
 [data-stack]{position:sticky;background:var(--white)}
 [data-stack] + [data-stack]{box-shadow:0 -20px 40px -26px rgba(42,21,17,.22)}
@@ -473,6 +632,40 @@ main{overflow-x:clip}
   .longread__h,.longread__body,.acad__txt,.acad figure{grid-column:1 / -1}
   .exp b,.exp small{grid-column:1 / -1}
   .lb__nav{top:auto;bottom:-56px;transform:none}
+  .screen{min-height:0}
+  .hero__img{height:100%}
+  .hero__main{max-width:none}
+  /* телефон: оффер сверху, цифры и кнопка внизу на газоне, здание посередине чистое */
+  .hero{justify-content:flex-start;padding:calc(var(--header-h) + 18px) 0 20px;min-height:max(100svh,800px)}
+  .hero__top{flex:1;justify-content:space-between;gap:var(--s5)}
+  .hero__img img{object-position:64% 50%}
+  .hero__fig::after{background:linear-gradient(180deg,rgba(20,11,8,.82) 0%,rgba(20,11,8,.55) 22%,rgba(20,11,8,0) 36%,rgba(20,11,8,0) 64%,rgba(20,11,8,.6) 76%,rgba(20,11,8,.9) 100%)}
+  .hero h1{font-size:clamp(34px,10vw,44px);line-height:1.02}
+  .hero__sub{margin-top:var(--s3);font-size:16px;line-height:1.45}
+  .hero__bottom{gap:var(--s4)}
+  .hero .facts{gap:var(--s3) var(--s3);width:100%}
+  .hero .facts > div{padding-left:var(--s3)}
+  .hero .facts dt{font-size:26px}
+  .hero .facts > div:last-child dt{font-size:22px;padding-top:.1em}
+  .hero .facts dd{margin-top:4px;font-size:12px;line-height:1.35}
+  .hero .btn--light{min-height:46px}
+  .hero__fig .cap{display:none}
+  .kelly__img{height:auto;aspect-ratio:4/3}
+  .shead__side{margin-top:var(--s4)}
+  .hero__main,.hero__side{grid-column:1 / -1}
+  .facts{grid-template-columns:1fr 1fr;gap:var(--s5) var(--s4)}
+  .mission__stmt,.mission__quote{grid-column:1 / -1;grid-row:auto}
+  .mission__quote{margin-top:var(--s7)}
+  .kelly__wrap{max-width:none}
+  #lapsSlides{height:auto;aspect-ratio:4/3}
+  .laps__arrow{width:44px;height:44px}
+  .dir__card{height:auto;aspect-ratio:3/4}
+  .team__head .lead{grid-column:1 / -1;margin-top:var(--s3)}
+  .longread__body{grid-column:1 / -1;columns:1}
+  .acad figure{justify-self:stretch}
+  .acad .fr{height:auto;width:100%}
+  .strip{grid-auto-columns:78vw}
+  .pp__heroimg{height:56vh}
 }
 
 /* ---------- уменьшенное движение ---------- */
@@ -553,35 +746,43 @@ main{overflow-x:clip}
 <div class="page" data-page="home">
 
   <!-- 1.1 Обложка: слоган, описание, фото на всю ширину с подписью -->
-  <section class="hero" data-stack aria-labelledby="heroTitle">
-    <div class="wrap hero__top">
-      <h1 id="heroTitle" data-i18n="hero.title">Создаем световой облик вашего пространства</h1>
-      <div class="hero__side">
-        <p class="lead" data-i18n="hero.sub">Мы делаем вечерний облик зданий и пространств выразительным, а свет осознанной частью архитектуры</p>
-        <a class="btn" href="#/contacts"><span data-i18n="cta">Получить консультацию</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      </div>
-    </div>
+  <section class="hero" aria-labelledby="heroTitle">
     <figure class="hero__fig">
       <div class="hero__img" id="heroImg"></div>
       <figcaption class="cap"><b data-i18n="hero.capT">Гольф 1</b><span data-i18n="hero.cap">Екатеринбург. Архитектурное и ландшафтное освещение частного дома</span></figcaption>
     </figure>
+    <div class="wrap hero__top">
+      <div class="hero__main">
+        <h1 id="heroTitle" data-i18n="hero.title">Создаем световой облик вашего пространства</h1>
+        <p class="lead hero__sub" data-i18n="hero.sub">Мы делаем вечерний облик зданий и пространств выразительным, а свет осознанной частью архитектуры</p>
+      </div>
+      <div class="hero__bottom">
+        <dl class="facts">
+          <div><dt>20+</dt><dd data-i18n="facts.1">лет работы со светом</dd></div>
+          <div><dt>4</dt><dd data-i18n="facts.2">направления: архитектура, интерьер, ландшафт, город</dd></div>
+          <div><dt>5</dt><dd data-i18n="facts.3">этапов работы: от концепции до монтажа</dd></div>
+          <div><dt>LineaLight</dt><dd data-i18n="facts.4">дилеры, прямые поставки из Италии</dd></div>
+        </dl>
+        <a class="btn btn--light" href="#/contacts"><span data-i18n="cta">Получить консультацию</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
   </section>
 
   <!-- 1.2 Философия / миссия -->
-  <section class="section section--paper mission" data-stack aria-labelledby="missionTitle">
+  <section class="section section--paper mission screen" data-stack aria-labelledby="missionTitle">
     <div class="wrap mission__grid">
-      <h2 class="kicker" id="missionTitle" data-i18n="mission.h">Философия</h2>
+      <h2 class="sr" id="missionTitle" data-i18n="mission.h">Философия</h2>
       <p class="mission__stmt" data-i18n="mission.lead">Создаем световую среду, в которой архитектура раскрывается в вечернем свете, интерьер обретает глубину, а городские пространства становятся комфортными</p>
       <figure class="mission__quote">
         <blockquote data-i18n="quote.turrell">«Свет не то, что освещает пространство. Свет то, из чего пространство состоит»</blockquote>
-        <figcaption data-i18n="quote.by">Джеймс Тюрелл</figcaption>
+        <figcaption data-i18n="quote.by">Джеймс Таррелл</figcaption>
       </figure>
     </div>
   </section>
 
   <!-- 1.3 Три роли света по Ричарду Келли: журнальный триптих -->
-  <section class="section kelly" data-stack aria-labelledby="kellyTitle">
-    <div class="wrap">
+  <section class="section kelly screen" data-stack aria-labelledby="kellyTitle">
+    <div class="wrap kelly__wrap">
       <div class="shead">
         <h2 id="kellyTitle" data-i18n="kelly.h">Три роли света</h2>
         <p data-i18n="kelly.p">Ричард Келли, основоположник архитектурного светодизайна, описал свет через три роли. Мы используем эту логику в каждом проекте</p>
@@ -591,42 +792,39 @@ main{overflow-x:clip}
   </section>
 
   <!-- 1.4 Слайдшоу таймлапсов -->
-  <section class="section section--paper laps" data-stack aria-labelledby="lapsTitle" aria-roledescription="carousel">
+  <section class="section section--paper laps screen" data-stack aria-labelledby="lapsTitle" aria-roledescription="carousel">
     <div class="wrap">
       <div class="shead">
         <span class="kicker" data-i18n="laps.k">Таймлапсы</span>
         <h2 id="lapsTitle" data-i18n="laps.h">Как загорается город</h2>
         <p data-i18n="laps.p">Вечер на наших объектах: от первых сумерек до полного света</p>
       </div>
-      <div class="laps__stage" id="laps" tabindex="0">
-        <div id="lapsSlides"></div>
-      </div>
+    </div>
+    <div class="laps__stage" id="laps" tabindex="0">
+      <div id="lapsSlides"></div>
+      <button class="laps__arrow laps__arrow--prev" type="button" id="lapsPrev" data-i18n-aria="prev" aria-label="Предыдущее"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
+      <button class="laps__arrow laps__arrow--next" type="button" id="lapsNext" data-i18n-aria="next" aria-label="Следующее"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
       <div class="laps__bar"><i id="lapsBar"></i></div>
-      <div class="laps__ui">
-        <p class="laps__cap" id="lapsCap" aria-live="polite"></p>
-        <div class="laps__ctrl">
-          <button class="arrow-btn" type="button" id="lapsPrev" data-i18n-aria="prev" aria-label="Предыдущее"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
-          <span class="laps__count" id="lapsCount">01 / 04</span>
-          <button class="arrow-btn" type="button" id="lapsNext" data-i18n-aria="next" aria-label="Следующее"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
-        </div>
-      </div>
+    </div>
+    <div class="wrap laps__ui">
+      <p class="laps__cap" id="lapsCap" aria-live="polite"></p>
+      <span class="laps__count" id="lapsCount">01 / 04</span>
     </div>
   </section>
 
   <!-- 1.5 Направления работы: 4 категории, слайдшоу при наведении + стрелки -->
-  <section class="section dirs" data-stack id="directions" aria-labelledby="dirTitle">
+  <section class="section dirs screen" data-stack id="directions" aria-labelledby="dirTitle">
     <div class="wrap">
       <div class="shead">
         <h2 id="dirTitle" data-i18n="dir.h">Направления работы</h2>
-        <p data-i18n="dir.sub">Наружная и внутренняя среда освещения</p>
+        <div class="shead__side"><p data-i18n="dir.sub">Наружная и внутренняя среда освещения</p><a class="tlink" href="#/projects"><span data-i18n="dir.all">Смотреть все проекты</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
       </div>
       <div class="dirs__grid" id="dirsGrid"></div>
-      <div class="dirs__more"><a class="tlink" href="#/projects"><span data-i18n="dir.all">Смотреть все проекты</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
     </div>
   </section>
 
   <!-- 1.6 Услуги: строки-аккордеон, стрелка вниз -->
-  <section class="section section--paper services" data-stack id="services" aria-labelledby="servTitle">
+  <section class="section section--paper services screen" data-stack id="services" aria-labelledby="servTitle">
     <div class="wrap">
       <div class="shead">
         <h2 id="servTitle" data-i18n="serv.h">Услуги</h2>
@@ -641,7 +839,7 @@ main{overflow-x:clip}
   </section>
 
   <!-- 1.7 Нам доверяют: бегущая строка -->
-  <section class="section trust" data-stack id="partners" aria-labelledby="trustTitle">
+  <section class="section trust screen" data-stack id="partners" aria-labelledby="trustTitle">
     <div class="wrap">
       <div class="shead">
         <h2 id="trustTitle" data-i18n="trust.h">Нам доверяют</h2>
@@ -687,18 +885,15 @@ main{overflow-x:clip}
      3. О НАС
      ====================================================================== -->
 <div class="page" data-page="about">
-  <section class="phead ahead" data-stack aria-labelledby="aboutTitle">
-    <div class="wrap phead__grid">
+  <!-- 3.1 Открытие и двое: заголовок и портреты рядом, весь блок в один экран -->
+  <section class="team" data-stack aria-labelledby="aboutTitle">
+    <div class="wrap phead__grid team__head">
       <div style="grid-column:1 / span 8">
         <span class="kicker" data-i18n="about.k">О бюро</span>
-        <h1 id="aboutTitle" style="margin-top:16px" data-i18n="about.h">Doppio значит дуэт</h1>
+        <h1 id="aboutTitle" data-i18n="about.h">Doppio значит дуэт</h1>
       </div>
       <p class="lead" data-i18n="about.lead">Два светодизайнера, одна семья и больше двадцати лет работы со светом</p>
     </div>
-  </section>
-
-  <!-- 3.1 Двое: портреты рядом, весь блок в один экран -->
-  <section class="team" data-stack aria-label="Команда" data-i18n-aria="about.team">
     <div class="wrap duo">
       <figure class="person">
         <div class="person__img" data-img="about/person-1.jpg" data-alt="p1.alt" data-ph="p1.ph"></div>
@@ -720,7 +915,7 @@ main{overflow-x:clip}
   </section>
 
   <!-- 3.2 Бэкграунд и подход: лонгрид с буквицей -->
-  <section class="section" data-stack aria-labelledby="approachTitle">
+  <section class="section screen" data-stack aria-labelledby="approachTitle">
     <div class="wrap longread">
       <div class="longread__h"><span class="kicker" data-i18n="about.k2">Подход</span><h2 id="approachTitle" data-i18n="about.h2">Свет как материал</h2></div>
       <div class="longread__body">
@@ -732,7 +927,7 @@ main{overflow-x:clip}
     </div>
   </section>
 
-  <figure class="pull" data-stack>
+  <figure class="pull screen" data-stack>
     <div class="wrap">
       <blockquote data-i18n="about.q">«Выделяем главное, создаем среду и добавляем характер»</blockquote>
       <figcaption data-i18n="about.qby">Метод DOPPIO по Ричарду Келли</figcaption>
@@ -740,7 +935,7 @@ main{overflow-x:clip}
   </figure>
 
   <!-- 3.3 Академическая и практическая составляющая -->
-  <section class="section" data-stack aria-labelledby="acadTitle">
+  <section class="section screen" data-stack aria-labelledby="acadTitle">
     <div class="wrap acad">
       <div class="acad__txt">
         <span class="kicker" data-i18n="acad.k">Академия</span>
@@ -756,7 +951,7 @@ main{overflow-x:clip}
   </section>
 
   <!-- 3.4 Галерея партнёров: заводы и выставки -->
-  <section class="section section--paper" data-stack aria-labelledby="partnTitle">
+  <section class="section section--paper screen" data-stack aria-labelledby="partnTitle">
     <div class="wrap">
       <div class="shead">
         <h2 id="partnTitle" data-i18n="partn.h">Заводы и выставки</h2>
@@ -767,7 +962,7 @@ main{overflow-x:clip}
   </section>
 
   <!-- 3.5 Где применима наша экспертиза -->
-  <section class="section" data-stack aria-labelledby="expTitle">
+  <section class="section screen" data-stack aria-labelledby="expTitle">
     <div class="wrap">
       <div class="shead"><h2 id="expTitle" data-i18n="exp.h">Где применима наша экспертиза</h2></div>
       <ul class="exp" id="expList"></ul>
@@ -778,7 +973,7 @@ main{overflow-x:clip}
 <!-- ======================================================================
      КОНТАКТЫ И ФОРМА: последний блок каждой страницы
      ====================================================================== -->
-<section class="section contacts" data-stack id="contacts" aria-labelledby="contTitle">
+<section class="section contacts screen" data-stack id="contacts" aria-labelledby="contTitle">
   <div class="wrap contacts__grid">
     <div class="contacts__info">
       <span class="kicker" data-i18n="nav.contacts">Контакты</span>
@@ -905,14 +1100,14 @@ ru:{
   "hero.title":"Создаем световой облик вашего пространства",
   "hero.sub":"Мы делаем вечерний облик зданий и пространств выразительным, а свет осознанной частью архитектуры",
   "hero.capT":"Гольф 1","hero.cap":"Екатеринбург. Архитектурное и ландшафтное освещение частного дома","hero.alt":"Частный дом в сосновом лесу с архитектурной и ландшафтной подсветкой вечером",
-  "mission.h":"Философия",
+  "mission.h":"Философия","facts.1":"лет работы со светом","facts.2":"направления: архитектура, интерьер, ландшафт, город","facts.3":"этапов работы: от концепции до монтажа","facts.4":"дилеры, прямые поставки из Италии",
   "mission.lead":"Создаем световую среду, в которой архитектура раскрывается в вечернем свете, интерьер обретает глубину, а городские пространства становятся комфортными",
   "kelly.h":"Три роли света",
   "kelly.p":"Ричард Келли, основоположник архитектурного светодизайна, описал свет через три роли. Мы используем эту логику в каждом проекте",
   "kelly.1t":"Фокусное свечение","kelly.1":"Выделяем главное: вход, фактуру фасада, скульптуру, акцент интерьера. Взгляд сам находит то, ради чего задуман объект.",
   "kelly.2t":"Общий свет","kelly.2":"Создаем среду: мягкий фон, в котором спокойно находиться, ориентироваться и видеть лица людей.",
   "kelly.3t":"Игра бликов","kelly.3":"Добавляем характер: блики, мерцание, точечные источники. То, что делает вечер живым и запоминающимся.",
-  "quote.turrell":"«Свет не то, что освещает пространство. Свет то, из чего пространство состоит»","quote.by":"Джеймс Тюрелл",
+  "quote.turrell":"«Свет не то, что освещает пространство. Свет то, из чего пространство состоит»","quote.by":"Джеймс Таррелл",
   "laps.k":"Таймлапсы","laps.h":"Как загорается город","laps.p":"Вечер на наших объектах: от первых сумерек до полного света",
   "laps.hist":"Архитектурная подсветка исторических зданий","laps.city":"Освещение городских пространств и улиц",
   "dir.h":"Направления работы","dir.sub":"Наружная и внутренняя среда освещения","dir.all":"Смотреть все проекты","dir.open":"Смотреть проекты",
@@ -964,7 +1159,7 @@ en:{
   "hero.title":"We shape the way your space looks in light",
   "hero.sub":"We make the evening face of buildings and places expressive, and turn light into a deliberate part of the architecture",
   "hero.capT":"Golf 1","hero.cap":"Yekaterinburg. Architectural and landscape lighting for a private house","hero.alt":"Private house in a pine forest with architectural and landscape lighting at dusk",
-  "mission.h":"Philosophy",
+  "mission.h":"Philosophy","facts.1":"years of working with light","facts.2":"fields: architecture, interiors, landscape, city","facts.3":"stages: from concept to installation","facts.4":"dealers, direct supply from Italy",
   "mission.lead":"We create lighting in which architecture comes alive in the evening, interiors gain depth and city spaces become comfortable",
   "kelly.h":"Three roles of light",
   "kelly.p":"Richard Kelly, a founder of architectural lighting design, described light through three roles. We follow this logic in every project",
@@ -1298,8 +1493,6 @@ function initLaps(){
   $("#lapsPrev").addEventListener("click", () => lapsGo(lapsI-1));
   $("#lapsNext").addEventListener("click", () => lapsGo(lapsI+1));
   stage.addEventListener("keydown", e => { if(e.key==="ArrowLeft") lapsGo(lapsI-1); if(e.key==="ArrowRight") lapsGo(lapsI+1); });
-  stage.addEventListener("pointerenter", () => lapsPaused = true);
-  stage.addEventListener("pointerleave", () => lapsPaused = false);
   swipe(stage, d => lapsGo(lapsI + d));
   document.addEventListener("visibilitychange", () => { lapsPaused = document.hidden; const v = $("#lapsSlides .is-on video"); if(v){ document.hidden ? v.pause() : (lapsVisible && !REDUCED && v.play().catch(()=>{})); } });
   new IntersectionObserver(es => es.forEach(e => {
@@ -1477,7 +1670,12 @@ function route(){
   $$("[data-nav]").forEach(a => { if(a.dataset.nav===nav) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   if(target){
     const el = document.getElementById(target);
-    if(el) requestAnimationFrame(() => { layoutStacks(); window.scrollTo({top: Math.max(0, naturalTop(el)), behavior: REDUCED ? "auto" : "smooth"}); });
+    /* Услуги, Партнёры, Контакты открываются сразу, без перелистывания: мгновенный переход и появление блока, как у страниц */
+    if(el) requestAnimationFrame(() => {
+      layoutStacks();
+      window.scrollTo({top: Math.max(0, naturalTop(el)), behavior: "instant"});
+      if(!REDUCED && target !== "main"){ el.classList.remove("is-entering"); void el.offsetWidth; el.classList.add("is-entering"); }
+    });
   }
   closeMenu(false);
   onScroll();
@@ -1509,7 +1707,8 @@ function naturalTop(el){
   const stuck = $$("[data-stack]");
   const saved = stuck.map(x => [x, x.style.position]);
   stuck.forEach(x => x.style.position = "static");
-  const y = el.getBoundingClientRect().top + window.scrollY;
+  /* сумма offsetTop не зависит от анимации появления страницы (transform) */
+  let y = 0; for(let n = el; n; n = n.offsetParent) y += n.offsetTop;
   saved.forEach(([x,v]) => x.style.position = v);
   return y;
 }
