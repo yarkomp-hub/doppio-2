@@ -1268,7 +1268,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
   <section class="film screen" data-stack aria-label="Видео: частная резиденция, Курск" data-i18n-aria="film.label">
     <figure class="film__fig">
       <div class="film__stage" id="film">
-        <video id="filmVideo" muted loop playsinline autoplay preload="auto" poster="video/kursk.jpg" data-src="video/kursk.mp4"></video>
+        <video id="filmVideo" muted loop playsinline autoplay preload="auto" data-poster="video/kursk.jpg" data-src="video/kursk.mp4"></video>
         <div class="film__ph" id="filmPh"><span data-i18n="film.ph">Здесь будет видео</span></div>
         <button class="film__sound" type="button" id="filmSound" aria-pressed="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" stroke="none"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path class="x" d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span id="filmSoundT">Включить звук</span></button>
       </div>
@@ -1923,11 +1923,11 @@ let lapsI = 0, lapsT0 = 0, lapsPaused = false, lapsVisible = false, lapsRAF = 0;
 const LAPS_DUR = 9000;
 function renderLaps(){
   $("#lapsSlides").innerHTML = LAPS.map((l,i) => `<div class="laps__slide${i===lapsI?" is-on":""}" aria-roledescription="slide" aria-label="${i+1} / ${LAPS.length}">
-    <video muted loop playsinline preload="${i===0?"metadata":"none"}" poster="${esc(l.v)}.jpg" src="${esc(l.v)}.mp4" aria-label="${esc(t(l.cap))}: ${esc(L(l.obj))}"></video>
+    <video muted loop playsinline preload="${i===0?"metadata":"none"}" poster="${esc(ASSET+l.v)}.jpg" src="${esc(ASSET+l.v)}.mp4" aria-label="${esc(t(l.cap))}: ${esc(L(l.obj))}"></video>
   </div>`).join("");
   $$("#lapsSlides video").forEach((v,i) => v.addEventListener("error", () => {
     const wrap = v.parentElement; if(!wrap) return;
-    wrap.innerHTML = `<img src="${esc(LAPS[i].v)}.jpg" alt="${esc(L(LAPS[i].obj))}" loading="lazy">`;
+    wrap.innerHTML = `<img src="${esc(ASSET+LAPS[i].v)}.jpg" alt="${esc(L(LAPS[i].obj))}" loading="lazy">`;
   }, {once:true}));
   setLapsCap();
 }
@@ -2175,7 +2175,7 @@ function initFilm(){
   new IntersectionObserver(es => es.forEach(e => { if(!e.isIntersecting && !v.muted) setSound(false); }), {threshold:.2}).observe($("#film"));
   v.addEventListener("error", () => { const im = new Image(); im.alt = ""; im.className = "film__poster"; im.onload = () => $("#film").classList.add("has-video"); im.src = v.getAttribute("poster"); v.replaceWith(im); }, {once:true});
   if(REDUCED) v.removeAttribute("autoplay");
-  v.src = v.dataset.src;  /* лежит рядом со страницей: v2/video/kursk.mp4 */
+  v.poster = ASSET + v.dataset.poster; v.src = ASSET + v.dataset.src;  /* video/kursk.mp4 в корне репозитория */
 }
 function openMenu(){ $("#menu").classList.add("is-open"); $("#burger").setAttribute("aria-expanded","true"); document.body.style.overflow="hidden"; $("#menuClose").focus(); }
 function closeMenu(focus=true){ if(!$("#menu").classList.contains("is-open")) return; $("#menu").classList.remove("is-open"); $("#burger").setAttribute("aria-expanded","false"); document.body.style.overflow=""; if(focus) $("#burger").focus(); }
