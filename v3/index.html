@@ -1361,6 +1361,13 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
   .filters button{min-height:34px;padding-block:4px}
 }
 
+
+/* ПРАВКИ 02.11 (5): проекты и «Реализуем проекты для» одной страницей, без наезда */
+.page[data-page="projects"] .phead{padding-bottom:0}
+.page[data-page="projects"] .pgrid{padding-bottom:clamp(40px,5vw,72px)}
+.forsec[data-stack]{background:var(--white);box-shadow:none;padding-top:clamp(24px,3vw,48px)}
+.forsec .wrap{padding-top:clamp(16px,2vw,32px)}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -1546,7 +1553,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
      2. ПРОЕКТЫ: сетка карточек с фильтром по категориям
      ====================================================================== -->
 <div class="page" data-page="projects">
-  <section class="phead" data-stack aria-labelledby="projTitle">
+  <section class="phead" data-stack data-flow aria-labelledby="projTitle">
     <div class="wrap">
       <div class="phead__grid">
         <h1 id="projTitle" data-i18n="proj.h">Проекты</h1>
@@ -1557,7 +1564,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
     <div class="wrap" style="margin-top:clamp(40px,5vw,72px)"><div class="pgrid" id="pgrid"></div></div>
   </section>
 
-  <section class="section section--paper" data-stack aria-labelledby="forTitle">
+  <section class="section forsec" data-stack data-flow aria-labelledby="forTitle">
     <div class="wrap">
       <div class="shead"><h2 id="forTitle" data-i18n="for.h">Реализуем проекты для</h2></div>
       <ul class="forlist" id="forList"></ul>
