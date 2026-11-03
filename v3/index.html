@@ -1444,7 +1444,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 }
 
 /* заявка: фото фоном, всё по центру */
-.contacts{isolation:isolate;color:#fff;background:#120d0b var(--cbg) center/cover no-repeat!important}
+.contacts{isolation:isolate;color:#fff;background:#120d0b var(--cbg) 50% 78%/cover no-repeat!important}
 .contacts::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,7,6,.62)}
 .contacts.screen{justify-content:center}
 .contacts__grid{display:flex!important;flex-direction:column;align-items:center;text-align:center}
@@ -1484,6 +1484,14 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
   .contacts .field textarea{min-height:50px;height:50px}
   .contacts .check-wrap{grid-column:1 / -1}
 }
+
+
+/* ПРАВКИ 03.11 (2): текст знакомства слева от фонаря, форма выше, без наезда заявки */
+.meet.is-placed{align-items:flex-start}
+.meet.is-placed .meet__in{position:absolute;left:var(--ml);top:var(--wt);width:var(--ww);max-width:none;margin:0;padding:0}
+.meet.is-placed .meet__word{width:var(--ww)}
+.meet.is-placed .meet__text{max-width:none;font-size:clamp(22px,calc(var(--ww) * .082),40px)}
+.contacts .form{margin-top:auto;margin-bottom:0}
 
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -1822,7 +1830,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 <!-- ======================================================================
      КОНТАКТЫ И ФОРМА: последний блок каждой страницы
      ====================================================================== -->
-<section class="section contacts screen" data-stack id="contacts" style="--cbg:none" aria-labelledby="contTitle">
+<section class="section contacts screen" data-stack data-flow id="contacts" style="--cbg:none" aria-labelledby="contTitle">
   <div class="wrap contacts__grid">
     <div class="contacts__info">
       <h2 id="contTitle" data-i18n="cont.h">Обсудим Ваш Проект</h2>
@@ -2568,6 +2576,7 @@ function layoutStacks(){
     el.style.zIndex = n;
   });
   stackParallax();
+  placeMeet();
 }
 /* настоящее положение блока на странице (у прилипших getBoundingClientRect врёт) */
 function naturalTop(el){
@@ -2580,6 +2589,22 @@ function naturalTop(el){
   return y;
 }
 window.addEventListener("resize", layoutStacks);
+/* блок знакомства: текст слева от фонаря, «О» на уровне фонаря и не заходит на него и на столб */
+function placeMeet(){
+  const sec = $(".page.is-active .meet"); if(!sec) return;
+  if(innerWidth < 768){ sec.classList.remove("is-placed"); return; }
+  const W = sec.clientWidth, H = sec.clientHeight, iw = 1800, ih = 1013;
+  const k = Math.max(W/iw, H/ih), dw = iw*k, dh = ih*k;
+  const ox = (W - dw) * .6, oy = (H - dh) * .5;
+  const lx = ox + .497*dw, ly = oy + .385*dh, lr = .045*dw;   /* центр фонаря и радиус ореола */
+  const left = Math.max(24, W*.04);
+  const ww = Math.max(220, Math.min(560, lx - lr - 24 - left));
+  sec.style.setProperty("--ml", left + "px");
+  sec.style.setProperty("--ww", ww + "px");
+  sec.style.setProperty("--wt", (ly - ww*86/516/2) + "px");
+  sec.classList.add("is-placed");
+}
+window.addEventListener("resize", placeMeet);
 window.addEventListener("load", layoutStacks);
 /* пересчёт, когда меняется высота блоков (догрузились фото, сменился язык) */
 const STACK_RO = window.ResizeObserver ? new ResizeObserver(() => layoutStacks()) : null;
