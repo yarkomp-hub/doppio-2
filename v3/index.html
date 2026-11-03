@@ -1444,7 +1444,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 }
 
 /* заявка: фото фоном, всё по центру */
-.contacts{isolation:isolate;color:#fff;background:#120d0b var(--cbg) 50% 78%/cover no-repeat!important}
+.contacts{isolation:isolate;color:#fff;background:#120d0b var(--cbg) center/cover no-repeat!important}
 .contacts::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(10,7,6,.62)}
 .contacts.screen{justify-content:center}
 .contacts__grid{display:flex!important;flex-direction:column;align-items:center;text-align:center}
@@ -1491,7 +1491,10 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 .meet.is-placed .meet__in{position:absolute;left:var(--ml);top:var(--wt);width:var(--ww);max-width:none;margin:0;padding:0}
 .meet.is-placed .meet__word{width:var(--ww)}
 .meet.is-placed .meet__text{max-width:none;font-size:clamp(22px,calc(var(--ww) * .082),40px)}
-.contacts .form{margin-top:auto;margin-bottom:0}
+.contacts .form{margin-top:min(26vh,max(24px,calc(100svh - 700px)));margin-bottom:auto}
+
+/* последний блок любой страницы и заявка листаются без наезда */
+.page > [data-stack]:last-child,[data-stack]:has(+ #contacts){position:relative!important;top:auto!important}
 
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -2562,7 +2565,7 @@ function stackParallax(){
     const next = list[i+1];
     let d = 0;
     if(next && !REDUCED){ d = Math.max(0, Math.min(H, H - next.getBoundingClientRect().top)); }
-    const shift = el.hasAttribute("data-flow") ? 0 : Math.round(d * .5);
+    const shift = (el.hasAttribute("data-flow") || (next && next.id === "contacts")) ? 0 : Math.round(d * .5);
     el.style.transform = shift ? `translate3d(0,${-shift}px,0)` : "";
   });
 }
@@ -2597,8 +2600,9 @@ function placeMeet(){
   const k = Math.max(W/iw, H/ih), dw = iw*k, dh = ih*k;
   const ox = (W - dw) * .6, oy = (H - dh) * .5;
   const lx = ox + .497*dw, ly = oy + .385*dh, lr = .045*dw;   /* центр фонаря и радиус ореола */
-  const left = Math.max(24, W*.04);
-  const ww = Math.max(220, Math.min(560, lx - lr - 24 - left));
+  /* правый край текста почти у ореола фонаря */
+  const ww = Math.max(220, Math.min(560, lx - lr - 24 - Math.max(24, W*.04)));
+  const left = Math.max(24, lx - lr - 12 - ww);
   sec.style.setProperty("--ml", left + "px");
   sec.style.setProperty("--ww", ww + "px");
   sec.style.setProperty("--wt", (ly - ww*86/516/2) + "px");
