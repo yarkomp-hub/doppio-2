@@ -1657,6 +1657,19 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 .contacts__lead{max-width:62ch}
 .contacts{background-position:50% 100%!important;background-size:max(100%, calc(128svh * 1.3333)) auto!important}
 
+/* ПРАВКИ 04.11 (2) */
+.services__after p,.trust__more{font-size:var(--t-base)!important;line-height:1.5}
+@media (max-width:767px){.services__after p,.trust__more{font-size:14.5px!important}}
+@media (min-width:768px){.trust__more{white-space:nowrap}}
+.contacts__lead{max-width:none}
+@media (min-width:768px){.contacts__lead{white-space:nowrap}}
+.film__stage .film__cap{left:auto;right:clamp(16px,3vw,40px);bottom:calc(clamp(40px,8vh,80px) + 34px);font-family:var(--f-head);font-weight:500;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+.film__link{bottom:clamp(40px,8vh,80px)!important}
+@media (max-width:767px){.film__stage .film__cap{left:16px;right:auto;bottom:calc(64px + 34px)}.film__link{bottom:64px!important;left:16px;right:auto}}
+
+/* режим «только главная»: ссылки на другие разделы неактивны */
+.home-only a[href^="#/projects"],.home-only a[href^="#/project/"],.home-only a[href^="#/about"]{cursor:default}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -1999,7 +2012,7 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
   <div class="wrap contacts__grid">
     <div class="contacts__info">
       <h2 id="contTitle" data-i18n="cont.h">Обсудим Ваш Проект</h2>
-      <p class="contacts__lead" data-i18n="cont.lead">Расскажите о вашем проекте, и мы ответим в течение двух рабочих дней</p>
+      <p class="contacts__lead" data-i18n-html="cont.lead">Расскажите о вашем проекте, и мы ответим в течение двух рабочих дней</p>
     </div>
     <form class="form" id="leadForm" novalidate>
       <div class="field">
@@ -2161,7 +2174,7 @@ ru:{
   "partn.h":"Заводы и выставки",
   "partn.p":"Мы дилеры премиальной итальянской марки LineaLight с поставками с заводов в Италии и Китае и работаем с производителями по прямым договорам, без посредников. Регулярно бываем на производствах и профильных выставках, чтобы знать оборудование вживую.",
   "exp.h":"Где применима наша экспертиза","exp.new":"Новое направление",
-  "cont.h":"Обсудим Ваш Проект","cont.lead":"Освещение пространства рассказывает об истории тех, кто с ним взаимодействует. Архитектор, дизайнер интерьеров или частное лицо? Давайте воплотим ваши идеи в жизнь","meet.t":"— это дуэт профессиональных светодизайнеров","meet.go":"Давайте знакомиться",
+  "cont.h":"Обсудим Ваш Проект","cont.lead":"Освещение пространства рассказывает об истории тех, кто с ним взаимодействует.<br>Архитектор, дизайнер интерьеров или частное лицо?<br>Давайте воплотим ваши идеи в жизнь","meet.t":"— это дуэт профессиональных светодизайнеров","meet.go":"Давайте знакомиться",
   "c.phone":"Телефон","c.email":"Почта","c.city":"Адрес",
   "f.name":"Имя *","f.phone":"Телефон *","f.email":"Email","f.type":"Тип объекта *","f.task":"Задача","f.choose":"Выберите тип объекта",
   "f.taskph":"Например: подсветка фасада частного дома",
@@ -2220,7 +2233,7 @@ en:{
   "partn.h":"Factories and trade shows",
   "partn.p":"We are dealers for the premium Italian brand LineaLight, supplied from factories in Italy and China, and we work with manufacturers under direct contracts without intermediaries. We regularly visit factories and trade shows to know the equipment first-hand.",
   "exp.h":"Where our expertise applies","exp.new":"New direction",
-  "cont.h":"Let’s talk about your project","cont.lead":"The lighting of a space tells the story of those who live with it. Architect, interior designer or private client? Let’s bring your ideas to life","meet.t":"is a duo of professional lighting designers","meet.go":"Let’s get acquainted",
+  "cont.h":"Let’s talk about your project","cont.lead":"The lighting of a space tells the story of those who live with it.<br>Architect, interior designer or private client?<br>Let’s bring your ideas to life","meet.t":"is a duo of professional lighting designers","meet.go":"Let’s get acquainted",
   "c.phone":"Phone","c.email":"Email","c.city":"Address",
   "f.name":"Name *","f.phone":"Phone *","f.email":"Email","f.type":"Project type *","f.task":"Your task","f.choose":"Choose a project type",
   "f.taskph":"For example: facade lighting for a private house",
@@ -2647,7 +2660,18 @@ function applyLang(lang){
    #/services  #/partners — блоки главной;  #/contacts — контакты текущей страницы
    ====================================================================== */
 let PAGE = null;
+/* HOME_ONLY: показ только главной — ссылки на другие разделы пока не работают */
+const HOME_ONLY = true;
+const isOtherPage = h => /^#\/(projects|project|about)(\/|$)/.test(h || "");
+if(HOME_ONLY){
+  document.addEventListener("click", e => {
+    const a = e.target.closest && e.target.closest("a[href]");
+    if(a && isOtherPage(a.getAttribute("href"))){ e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  document.documentElement.classList.add("home-only");
+}
 function route(){
+  if(HOME_ONLY && isOtherPage(location.hash)){ history.replaceState(null, "", "#/"); }
   const parts = location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
   let page = "home", target = null;
   if(parts[0]==="projects"){ page = "projects"; setFilter(parts[1] || "all"); }
