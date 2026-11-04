@@ -2829,6 +2829,52 @@ function fitProjectsOnce(){
   g.style.setProperty("--ih2", ih + "px");
 }
 window.addEventListener("resize", fitProjects);
+/* листание вниз: колесо мыши вниз сразу перелистывает на следующую страницу целиком.
+   Прокрутка вверх обычная. Только компьютер (мышь/тачпад) */
+const SNAP_DOWN = true;
+let snapBusy = false, snapUntil = 0;
+function snapStops(){
+  const els = $$(".page.is-active > [data-stack], #contacts, .ftr").filter(el => el.offsetParent || el.classList.contains("ftr"));
+  const max = document.documentElement.scrollHeight - innerHeight;
+  return els.map(el => Math.min(max, Math.round(naturalTop(el)))).concat([max]).sort((a,b) => a-b);
+}
+function snapTo(y){
+  const y0 = scrollY, d = y - y0, T = 700, t0 = performance.now();
+  if(Math.abs(d) < 2) return;
+  snapBusy = true;
+  const de = document.documentElement, sb = de.style.scrollBehavior; de.style.scrollBehavior = "auto";
+  const ease = k => 1 - Math.pow(1 - k, 3);
+  (function step(now){
+    const k = Math.min(1, (now - t0) / T);
+    window.scrollTo(0, y0 + d * ease(k));
+    if(k < 1) requestAnimationFrame(step);
+    else { de.style.scrollBehavior = sb; snapBusy = false; snapUntil = performance.now() + 450; }
+  })(t0);
+}
+window.addEventListener("wheel", e => {
+  if(!SNAP_DOWN || !FINE || innerWidth < 768 || e.ctrlKey) return;
+  if(e.deltaY <= 0) return;                         /* вверх — как обычно */
+  if(e.target.closest && e.target.closest(".lb.is-open, .menu.is-open, textarea, select")) return;
+  e.preventDefault();
+  if(snapBusy || performance.now() < snapUntil) return;
+  const y = scrollY, stops = snapStops();
+  let next = stops.find(v => v > y + 4);
+  if(next === undefined) return;
+  /* высокий блок, который не помещается в экран: сначала дочитать его по экрану */
+  if(next - y > innerHeight + 4) next = y + Math.round(innerHeight * .9);
+  snapTo(next);
+}, {passive:false});
+window.addEventListener("keydown", e => {
+  if(!SNAP_DOWN || !FINE || innerWidth < 768) return;
+  if(!["PageDown","ArrowDown"," "].includes(e.key)) return;
+  if(e.target.closest && e.target.closest("input, textarea, select, button, .lb.is-open, .menu.is-open")) return;
+  e.preventDefault();
+  if(snapBusy) return;
+  const y = scrollY, stops = snapStops();
+  let next = stops.find(v => v > y + 4); if(next === undefined) return;
+  if(next - y > innerHeight + 4) next = y + Math.round(innerHeight * .9);
+  snapTo(next);
+});
 window.addEventListener("load", layoutStacks);
 /* пересчёт, когда меняется высота блоков (догрузились фото, сменился язык) */
 const STACK_RO = window.ResizeObserver ? new ResizeObserver(() => layoutStacks()) : null;
