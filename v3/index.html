@@ -1717,6 +1717,63 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 .meet__trust .trust__more{color:var(--muted)}
 @media (max-width:767px){.meet__bg img{object-position:52% 70%;transform:none}}
 
+/* ==========================================================================
+   «ПРОЕКТЫ» ЛЕНДИНГ: один проект — один экран (по схеме)
+   ========================================================================== */
+.page[data-page="projects"] .phead,.page[data-page="projects"] .forsec{display:none}
+.plx{background:var(--white);min-height:100vh;min-height:100svh;padding:calc(var(--header-h) + clamp(14px,2.4vh,28px)) var(--margin) clamp(18px,3vh,32px);box-sizing:border-box}
+.plx__grid{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,27vw,420px);grid-template-rows:minmax(0,1fr) auto auto;column-gap:clamp(24px,3vw,56px);row-gap:clamp(12px,2vh,22px);height:calc(100svh - var(--header-h) - clamp(14px,2.4vh,28px) - clamp(18px,3vh,32px));max-width:var(--maxw);margin-inline:auto}
+.plx__hero{grid-column:1;grid-row:1;margin:0;min-height:0;overflow:hidden;background:var(--milk)}
+.plx__hero button{display:block;width:100%;height:100%;cursor:zoom-in}
+.plx__hero img{width:100%;height:100%;object-fit:cover}
+.plx__head{grid-column:1;grid-row:2;display:flex;align-items:baseline;gap:clamp(14px,2vw,32px);flex-wrap:wrap;padding-bottom:clamp(8px,1.4vh,14px);border-bottom:1px solid var(--line-strong)}
+.plx__num{font-family:var(--f-head);font-weight:500;font-size:12px;letter-spacing:.14em;color:var(--accent)}
+.plx__head h2{font-size:clamp(32px,min(1rem + 2.4vw,6vh),64px);font-weight:300;letter-spacing:-.03em;line-height:1}
+.plx__sub{flex:1 1 320px;margin:0;font-size:clamp(14px,min(.9vw,1.9vh),16px);line-height:1.45;color:var(--muted)}
+.plx__text{grid-column:2;grid-row:1 / span 3;min-height:0;overflow:auto;scrollbar-width:thin;padding-right:4px;font-size:clamp(13px,min(.95vw,1.8vh),16px);line-height:1.55}
+.plx__text p{margin:0 0 .9em}
+.plx__gal{grid-column:1;grid-row:3;display:flex;gap:clamp(8px,1vw,14px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;height:clamp(110px,17vh,190px)}
+.plx__gal::-webkit-scrollbar{display:none}
+.plx__gal.is-drag{cursor:grabbing;scroll-snap-type:none}
+.plx__gal button{flex:0 0 auto;height:100%;scroll-snap-align:start;overflow:hidden;background:var(--milk);cursor:zoom-in}
+.plx__gal img{height:100%;width:auto;display:block;filter:grayscale(1);transition:filter .5s var(--ease),transform .9s var(--ease);pointer-events:none;-webkit-user-drag:none}
+.plx__gal button:hover img,.plx__gal button:focus-visible img,.plx__gal button:active img{filter:none;transform:scale(1.03)}
+@media (max-width:767px){
+  .plx{min-height:0;padding:calc(env(safe-area-inset-top) + 72px) 16px 32px}
+  .plx__grid{display:flex;flex-direction:column;height:auto;gap:14px}
+  .plx__hero{aspect-ratio:3/2}
+  .plx__text{overflow:visible;font-size:15px}
+  .plx__gal{height:120px;order:3}
+  .plx__text{order:4}
+}
+
+/* текст проекта: буквица на 3 строки, выравнивание по ширине */
+.plx__text p{text-align:justify;text-align-last:left;hyphens:auto;-webkit-hyphens:auto}
+.plx__text p:first-child::first-letter{float:left;font-family:var(--f-head);font-weight:300;font-size:4.6em;line-height:.8;margin:.06em .1em 0 -.02em;color:var(--accent)}
+
+/* зеркальная компоновка: текст слева */
+@media (min-width:768px){
+  .plx--mirror .plx__grid{grid-template-columns:clamp(300px,27vw,420px) minmax(0,1fr)}
+  .plx--mirror .plx__hero,.plx--mirror .plx__head,.plx--mirror .plx__gal{grid-column:2}
+  .plx--mirror .plx__text{grid-column:1}
+}
+.plx__gal button{position:relative}
+.plx__gal .pp__proc{left:8px;bottom:8px;font-size:10px;padding:4px 8px}
+.plx + .plx{border-top:1px solid var(--line)}
+
+/* правки 05.11: колонка на четверть уже, лента фото во всю ширину */
+@media (min-width:768px){
+  .plx__grid{grid-template-columns:minmax(0,1fr) clamp(240px,20vw,400px)}
+  .plx--mirror .plx__grid{grid-template-columns:clamp(240px,20vw,400px) minmax(0,1fr)}
+  .plx__text{grid-row:1 / span 2}
+  .plx__gal,.plx--mirror .plx__gal{grid-column:1 / -1;height:clamp(96px,14vh,170px)}
+  .plx__text{font-size:clamp(12.5px,min(.9vw,1.65vh),15px);line-height:1.5}
+  .plx__text p{margin-bottom:.7em}
+}
+
+/* обрезка фото: объект сверху главный — не срезаем верх, обрезаем низ/фон */
+.plx__hero img{object-position:50% 0}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -1913,6 +1970,8 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
      2. ПРОЕКТЫ: сетка карточек с фильтром по категориям
      ====================================================================== -->
 <div class="page" data-page="projects">
+  <!-- 2.0 Проекты-лендинг: один проект — одна страница (рендерится из LAND) -->
+  <div id="land"></div>
   <section class="phead" data-stack data-flow aria-labelledby="projTitle">
     <div class="wrap">
       <div class="phead__grid">
@@ -2656,6 +2715,57 @@ function renderProjectPage(slug){
   return true;
 }
 
+/* --- «Проекты»: лендинг, один проект на страницу. Порядок: Гольф, VEER, Курск, РМК, Kinky Hair, Севастьянова --- */
+const LAND = [
+  {slug:"pine-creek", n:"Pine Creek", sub:{ru:"Загородная резиденция в одноимённом гольф-клубе. Архитектор — Максим Порошин. Оборудование — LineaLight Group.",en:"A country residence in the golf club of the same name. Architect: Maxim Poroshin. Equipment: LineaLight Group."},
+   award:{ru:"Бронзовый диплом XIII Российской национальной премии по ландшафтной архитектуре 2022",en:"Bronze diploma, 13th Russian National Landscape Architecture Award, 2022"},
+   text:{ru:[
+     "Архитектура этого дома напоминает яхту: палубы-террасы, большие панорамные окна и активный рельеф, с которого открывается вид на гольф-поля. С наступлением сумерек пластика здания постепенно меняется — свет деликатно выявляет его архитектуру.",
+     "Включаются светильники живописной центральной лестницы — Ryo высотой 820 мм с оригинальным внутренним свечением. Терраса первого этажа и входная группа внутреннего фасада освещены светильниками Portik, встроенными в подшивной деревянный потолок.",
+     "Особое внимание уделено ландшафту наших партнеров – бюро «Тектоника»: огромные сосны, сохранённые при строительстве, эффектно выявляются прожекторами Gardener, а их кроны на фоне тёмного неба создают неповторимый ажур. Вдоль лестницы Ryo освещают разнотравье склона.",
+     "Проект архитектурного и наружного освещения реализован на оборудовании LineaLight Group. За эту работу мы вместе с «Тектоникой» получили Бронзовый диплом XIII Российской национальной премии по ландшафтной архитектуре 2022 в номинации «Лучший реализованный проект светового дизайна»."]},
+   n_img:13, proc:[12,13]},
+  {slug:"veer", n:"Когда город смотрит на «Веер»", mirror:true,
+   sub:{ru:"ТРЦ «Веер Молл» на проспекте Космонавтов, Екатеринбург. Архитектура — ООО Фирма «АЛКУТА».",en:"VEER Mall shopping centre, Kosmonavtov Avenue, Yekaterinburg. Architecture: ALKUTA."},
+   text:{ru:[
+     "ТРЦ «Веер Молл» — современная архитектура с протяжёнными фасадами сложной пластики, активными светопрозрачными входными зонами и ажурной кровлей.",
+     "Концепция освещения разработана на основе архитектурных решений. Фасады решены светодинамикой заливающих прожекторов Prolamp RGBW от Linea Light (Италия), размещенных на опорах освещения вдоль комплекса — они выделяют пластику волнообразного фасада и создают эффект переливающихся красок в пространстве.",
+     "Входные группы ярко освещены линейными светильниками на ферменных конструкциях. Световые линии словно проникают сквозь стеклянные фасады, соединяя внутреннее пространство с внешним.",
+     "Здание одинаково хорошо читается как целиком, так и в деталях, с расстояния и вблизи. Архитектурно-художественное освещение выявляет архитектуру в ночной панораме города и усиливает эмоциональное воздействие."]},
+   n_img:9}
+];
+function renderLand(){
+  const box = $("#land"); if(!box) return;
+  box.innerHTML = LAND.map((p,k) => {
+    const imgs = Array.from({length:p.n_img}, (_,i) => `projects/${p.slug}/${pad(i+1)}`);
+    const isProc = i => (p.proc||[]).includes(i+1);
+    GALLERIES["land-"+p.slug] = imgs.map((b,i) => ({src:b+".jpg", cap:p.n, proc:isProc(i)}));
+    const paras = (p.text[LANG] || p.text.ru).map(t => `<p>${esc(t)}</p>`).join("");
+    return `<section class="plx${p.mirror?" plx--mirror":""}" data-stack data-flow id="p-${p.slug}" aria-labelledby="pt-${p.slug}">
+      <div class="plx__grid">
+        <figure class="plx__hero"><button type="button" data-gal="land-${p.slug}" data-i="0" aria-label="${esc(p.n)}">${imgHTML(imgs[0]+".jpg", p.n, p.n, {eager:k===0})}</button></figure>
+        <header class="plx__head">
+          <h2 id="pt-${p.slug}">${esc(p.n)}</h2>
+          <p class="plx__sub">${esc(L(p.sub))}</p>
+        </header>
+        <div class="plx__text">${paras}</div>
+        <div class="plx__gal" tabindex="0" aria-label="${esc(t("proj.gal"))}">
+          ${imgs.slice(1).map((b,i) => `<button type="button" data-gal="land-${p.slug}" data-i="${i+1}">${imgHTML(b+"s.jpg", `${p.n}, ${i+2}`, p.n)}${isProc(i+1) ? `<span class="pp__proc">${esc(t("proj.process"))}</span>` : ""}</button>`).join("")}
+        </div>
+      </div>
+    </section>`;
+  }).join("");
+  /* лента фото: тянуть мышью влево-вправо */
+  $$(".plx__gal", box).forEach(g => {
+    let down = false, x0 = 0, s0 = 0, moved = 0;
+    g.addEventListener("pointerdown", e => { if(e.pointerType !== "mouse") return; down = true; moved = 0; x0 = e.clientX; s0 = g.scrollLeft; g.classList.add("is-drag"); });
+    window.addEventListener("pointermove", e => { if(!down) return; const d = e.clientX - x0; moved = Math.max(moved, Math.abs(d)); g.scrollLeft = s0 - d; });
+    window.addEventListener("pointerup", () => { if(!down) return; down = false; g.classList.remove("is-drag"); });
+    g.addEventListener("click", e => { if(moved > 6){ e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
+    g.addEventListener("wheel", e => { if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; }, {passive:true});
+  });
+}
+
 /* --- о нас --- */
 function renderAbout(){
   $("#partnStrip").innerHTML = PARTNERS.map((c,i) => `<figure><div class="fr">${imgHTML(`about/partners/${pad(i+1)}.jpg`, L(c), L(c))}</div><figcaption class="cap"><span>${esc(L(c))}</span></figcaption></figure>`).join("");
@@ -2693,7 +2803,7 @@ function applyLang(lang){
   $('meta[name="description"]').content = t("meta.desc");
   $('meta[property="og:title"]').content = t("meta.title");
   $('meta[property="og:description"]').content = t("hero.title");
-  renderStatic(); renderDirs(); renderServices(); renderClients(); renderProjects(); renderAbout(); renderContacts();
+  renderStatic(); renderDirs(); renderServices(); renderClients(); renderProjects(); renderLand(); renderAbout(); renderContacts();
   renderLaps(); lapsGo(lapsI); initFilm();
   /* фон второй страницы продолжает фото обложки (зеркально) */
   if($("#glowBg") && $("#heroImg img")) $("#glowBg").src = $("#heroImg img").src;
@@ -2710,7 +2820,7 @@ function applyLang(lang){
 let PAGE = null;
 /* HOME_ONLY: показ только главной — ссылки на другие разделы пока не работают */
 const HOME_ONLY = true;
-const isOtherPage = h => /^#\/(projects|project|about)(\/|$)/.test(h || "");
+const isOtherPage = h => /^#\/(project|about)(\/|$)/.test(h || "");
 if(HOME_ONLY){
   document.addEventListener("click", e => {
     const a = e.target.closest && e.target.closest("a[href]");
