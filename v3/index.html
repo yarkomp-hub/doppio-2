@@ -1774,6 +1774,13 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 /* обрезка фото: объект сверху главный — не срезаем верх, обрезаем низ/фон */
 .plx__hero img{object-position:50% 0}
 
+/* 05.11b: больше поля сверху и снизу — композиция проекта меньше по высоте */
+@media (min-width:768px){
+  .plx{--pt:clamp(28px,6.5vh,80px);--pb:clamp(36px,9vh,110px);padding-top:calc(var(--header-h) + var(--pt));padding-bottom:var(--pb);height:100vh;height:100svh;min-height:0}
+  .plx__grid{height:calc(100svh - var(--header-h) - var(--pt) - var(--pb))}
+  .plx__gal,.plx--mirror .plx__gal{height:clamp(84px,12vh,150px)}
+}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -2978,7 +2985,7 @@ window.addEventListener("resize", fitProjects);
 const SNAP_DOWN = true;
 let snapBusy = false, snapUntil = 0;
 function snapStops(){
-  const els = $$(".page.is-active > [data-stack], #contacts, .ftr").filter(el => el.offsetParent || el.classList.contains("ftr"));
+  const els = $$(".page.is-active > [data-stack], .page.is-active #land > [data-stack], #contacts, .ftr").filter(el => el.offsetParent || el.classList.contains("ftr"));
   const max = document.documentElement.scrollHeight - innerHeight;
   return els.map(el => Math.min(max, Math.round(naturalTop(el)))).concat([max]).sort((a,b) => a-b);
 }
