@@ -1781,6 +1781,13 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
   .plx__gal,.plx--mirror .plx__gal{height:clamp(84px,12vh,150px)}
 }
 
+/* 06.11: видео в ленте проекта и в просмотре */
+.plx__play{position:absolute;left:50%;top:50%;z-index:2;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(243,240,231,.85);pointer-events:none;transition:transform var(--dur)}
+.plx__play::after{content:"";position:absolute;left:18px;top:14px;border-style:solid;border-width:9px 0 9px 14px;border-color:transparent transparent transparent var(--ink)}
+.plx__gal button:hover .plx__play{transform:scale(1.1)}
+.lb__stage video{display:block;max-width:min(1200px,calc(100vw - 2*clamp(16px,4vw,56px)));max-height:calc(100svh - 2*clamp(16px,4vw,56px));width:auto;height:auto;background:#000}
+.lb__proc.is-top{top:12px;bottom:auto}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -2265,7 +2272,7 @@ ru:{
   "trust.more":"А также архитектурные и ландшафтные бюро, отели, курорты, спортивные объекты и частные заказчики",
   "proj.h":"Проекты","proj.cats":"Категории проектов",
   "proj.lead":"Объектов у нас не сотни, и каждый прожит от концепции до настройки. Выберите направление или откройте любой проект",
-  "proj.open":"Смотреть фото","proj.process":"Из рабочего процесса","proj.video":"Видеоотзыв заказчика",
+  "proj.open":"Смотреть фото","proj.process":"Из рабочего процесса","proj.video":"Видеоотзыв заказчика","proj.work":"Работа в студии",
   "proj.task":"Задача","proj.gal":"Фотогалерея","proj.n":"фото","proj.solution":"Решение","proj.result":"Результат","proj.text":"Текст",
   "proj.f.city":"Город","proj.f.year":"Год","proj.f.works":"Работы","proj.f.cityv":"[город]","proj.f.yearv":"[год]","proj.f.worksv":"[состав работ]","proj.f.area":"Площадь","proj.f.areav":"[площадь или протяжённость]","proj.f.equip":"Оборудование","proj.f.equipv":"[оборудование]","proj.all":"Все","proj.prev":"Предыдущий проект","proj.next":"Следующий проект","proj.back":"Все проекты","proj.navl":"Другие проекты",
   "conc.k":"Визуализации и скетчи","conc.h":"Концепции","conc.p":"Решения, которые ждут реализации или уже в работе",
@@ -2324,7 +2331,7 @@ en:{
   "trust.more":"Along with architecture and landscape practices, hotels, resorts, sports venues and private clients",
   "proj.h":"Projects","proj.cats":"Project categories",
   "proj.lead":"We don’t take on hundreds of projects, and each one was carried from concept to commissioning. Pick a field or open any project",
-  "proj.open":"View photos","proj.process":"From the design process","proj.video":"Client video review",
+  "proj.open":"View photos","proj.process":"From the design process","proj.video":"Client video review","proj.work":"Studio at work",
   "proj.task":"Brief","proj.gal":"Photo gallery","proj.n":"photos","proj.solution":"Solution","proj.result":"Result","proj.text":"Text",
   "proj.f.city":"City","proj.f.year":"Year","proj.f.works":"Scope","proj.f.cityv":"[city]","proj.f.yearv":"[year]","proj.f.worksv":"[scope of work]","proj.f.area":"Area","proj.f.areav":"[area or length]","proj.f.equip":"Equipment","proj.f.equipv":"[equipment]","proj.all":"All","proj.prev":"Previous project","proj.next":"Next project","proj.back":"All projects","proj.navl":"More projects",
   "conc.k":"Visualisations and sketches","conc.h":"Concepts","conc.p":"Designs awaiting construction or already under way",
@@ -2739,14 +2746,35 @@ const LAND = [
      "Концепция освещения разработана на основе архитектурных решений. Фасады решены светодинамикой заливающих прожекторов Prolamp RGBW от Linea Light (Италия), размещенных на опорах освещения вдоль комплекса — они выделяют пластику волнообразного фасада и создают эффект переливающихся красок в пространстве.",
      "Входные группы ярко освещены линейными светильниками на ферменных конструкциях. Световые линии словно проникают сквозь стеклянные фасады, соединяя внутреннее пространство с внешним.",
      "Здание одинаково хорошо читается как целиком, так и в деталях, с расстояния и вблизи. Архитектурно-художественное освещение выявляет архитектуру в ночной панораме города и усиливает эмоциональное воздействие."]},
-   n_img:9}
+   n_img:9},
+  {slug:"kinky-hair", n:"Академия стиля Kinky Hair",
+   sub:{ru:"Коворкинг мастеров-стилистов, ЗИЛ-Арт, Москва. Дизайнер проекта — Елена Туркина.",en:"Coworking studio for hair stylists, ZIL-Art, Moscow. Interior designer: Elena Turkina."},
+   text:{ru:[
+     "Академия стиля Kinky Hair — это школа-студия и коворкинг для стилистов-парикмахеров. Перед архитектором стояла задача разработать двухуровневое трансформируемое пространство. В этом была основная сложность проекта — синхронизировать отдельные инженерные модули в единую управляемую систему, готовую к адаптации под широкий спектр задач.",
+     "Ключевое требование к освещению от заказчика студии заключалось в создании профессиональной среды с высокими требованиями к комфорту рабочего пространства мастеров, соответственно, к цветопередаче и оптимальным качественным характеристикам оборудования.",
+     "Возможности интерьера вариативны — это и рабочие места парикмахеров-стилистов, и обучающая студия для проведения мастер-классов и творческих показов с экраном и проектором, а также великолепные зоны для фотосъемок. Не отменяя весь необходимый набор подсобных и вспомогательных помещений для комфорта клиентов и сотрудников салона. Успех работы мастера-стилиста напрямую зависит от освещенности рабочего места. Светлое пространство, черно-белая графика мебели и рисунка на потолке, созданная системой освещения. Минимализм пространства определяет главными героями людей, для кого оно создается. Освещение выполнено на зарекомендовавшем себя оборудовании ALEDO, с высокими светотехническими и эксплуатационными характеристиками.",
+     "Светотехническая система расположена на шинопроводах в несколько линий над рабочими местами. Зоны клиента и «затылочной части» равномерно освещают светильники Pixel-FROST. В зоне смешивания красок и мытья головы дополнительно установлены прожекторы-кососветы PLANK WW, а входная зона и ресепшн решены прожекторами SONIC. В процессе работы школы-студии происходит модернизация рабочего пространства, соответственно, система освещения легко, интуитивно подстраивается под необходимые изменения и сюжеты.",
+     "Сложившийся тандем дизайнера Туркиной Елены и светодизайнера Елены Годовой реализовал совместно не один проект."
+   ]},
+   n_img:12, vids:[{v:"review", at:1, cap:"proj.video"},{v:"process", at:9, cap:"proj.work"}]},
+  {slug:"sevastyanov-house", n:"Усадьба «Дом купца Севастьянова»", mirror:true,
+   sub:{ru:"Символ Екатеринбурга",en:"A symbol of Yekaterinburg"},
+   text:{ru:[
+     "Проект и реализация архитектурно-художественного освещения здания-памятника архитектуры XIX века дома Купца Севастьянова выполнены Студией Архитектурного Света Елены Годовой в 2009 году в преддверии саммита стран ШОС.",
+     "Здание федерального значения с богатейшей историей, один из ключевых символов города Екатеринбурга, имеет декорированный фасад смешанных архитектурных стилей, таких как Эклектика, Необарокко и Русская Неоготика. Псевдоготические стрельчатые окна и балкон, активная лепнина карнизных элементов и декора над окнами – всё это предполагает игру света и тени.",
+     "Освещение здания выполнено максимально бережно по отношению к историческому фасаду. Ключевым аспектом концепции является классическое сочетание холодной и тёплой световой температуры, в комбинации с заливающим и локальным светом.",
+     "В декабре 2009 года Елена Годова была награждена грамотой министерства строительства Свердловской области за реализацию этого проекта. Реконструкция здания, где наша компания выполнила полную модернизацию архитектурно-художественного освещения, была выполнена в 2019-2020 годах, с применением отечественного LED-оборудования и компонентов производства Saros."
+   ]},
+   n_img:4}
 ];
 function renderLand(){
   const box = $("#land"); if(!box) return;
   box.innerHTML = LAND.map((p,k) => {
     const imgs = Array.from({length:p.n_img}, (_,i) => `projects/${p.slug}/${pad(i+1)}`);
     const isProc = i => (p.proc||[]).includes(i+1);
-    GALLERIES["land-"+p.slug] = imgs.map((b,i) => ({src:b+".jpg", cap:p.n, proc:isProc(i)}));
+    const items = imgs.map((b,i) => ({src:b+".jpg", th:b+"s.jpg", cap:p.n, proc:isProc(i)}));
+    (p.vids||[]).slice().sort((a,b) => b.at - a.at).forEach(v => { const b = `projects/${p.slug}/video/${v.v}`; items.splice(v.at, 0, {video:b+".mp4", src:b+".jpg", th:b+".jpg", cap:p.n, label:v.cap}); });
+    GALLERIES["land-"+p.slug] = items;
     const paras = (p.text[LANG] || p.text.ru).map(t => `<p>${esc(t)}</p>`).join("");
     return `<section class="plx${p.mirror?" plx--mirror":""}" data-stack data-flow id="p-${p.slug}" aria-labelledby="pt-${p.slug}">
       <div class="plx__grid">
@@ -2757,7 +2785,7 @@ function renderLand(){
         </header>
         <div class="plx__text">${paras}</div>
         <div class="plx__gal" tabindex="0" aria-label="${esc(t("proj.gal"))}">
-          ${imgs.slice(1).map((b,i) => `<button type="button" data-gal="land-${p.slug}" data-i="${i+1}">${imgHTML(b+"s.jpg", `${p.n}, ${i+2}`, p.n)}${isProc(i+1) ? `<span class="pp__proc">${esc(t("proj.process"))}</span>` : ""}</button>`).join("")}
+          ${items.slice(1).map((it,i) => `<button type="button" data-gal="land-${p.slug}" data-i="${i+1}"${it.video?' class="is-video"':""}>${imgHTML(it.th, `${p.n}, ${i+2}`, p.n)}${it.video ? `<span class="plx__play" aria-hidden="true"></span><span class="pp__proc">${esc(t(it.label))}</span>` : it.proc ? `<span class="pp__proc">${esc(t("proj.process"))}</span>` : ""}</button>`).join("")}
         </div>
       </div>
     </section>`;
@@ -3044,13 +3072,16 @@ function lbOpen(key, i){
 function lbShow(i){
   const n = LB.list.length; LB.i = (i + n) % n;
   const it = LB.list[LB.i];
-  $("#lbImg").innerHTML = imgHTML(it.src, it.cap, it.cap, {eager:true});
+  $("#lbImg").innerHTML = it.video
+    ? `<video src="${esc(ASSET+it.video)}" poster="${esc(ASSET+it.src)}" controls autoplay playsinline preload="auto" aria-label="${esc(t(it.label))}"></video>`
+    : imgHTML(it.src, it.cap, it.cap, {eager:true});
   $("#lbCount").textContent = `${pad(LB.i+1)} / ${pad(n)}`;
   $("#lbCap").textContent = it.cap;
-  $("#lbProc").hidden = !it.proc; $("#lbProc").textContent = it.proc ? t("proj.process") : "";
+  const lab = it.video ? t(it.label) : it.proc ? t("proj.process") : "";
+  $("#lbProc").hidden = !lab; $("#lbProc").textContent = lab; $("#lbProc").classList.toggle("is-top", !!it.video);
   $("#lbPrev").hidden = $("#lbNext").hidden = n < 2;
 }
-function lbClose(){ $("#lb").classList.remove("is-open"); document.body.style.overflow=""; if(LB.last) LB.last.focus(); }
+function lbClose(){ $("#lbImg").innerHTML = ""; $("#lb").classList.remove("is-open"); document.body.style.overflow=""; if(LB.last) LB.last.focus(); }
 
 /* Свайп для слайдеров и лайтбокса */
 function swipe(el, cb){
