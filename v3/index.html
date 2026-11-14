@@ -1798,6 +1798,42 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 /* 14.11: Атриум — здание внизу кадра, по согласованию срезаем небо сверху */
 #p-atrium-palace .plx__hero img{object-position:50% 88%}
 
+/* 14.11: галерея остальных объектов после Атриума */
+.vg{background:var(--white);box-sizing:border-box;height:100vh;height:100svh;padding:calc(var(--header-h) + clamp(28px,6.5vh,80px)) var(--margin) clamp(36px,9vh,110px)}
+.vg__grid{height:100%;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) clamp(120px,10vw,168px);gap:clamp(12px,1.4vw,22px)}
+.vg__stage{position:relative;overflow:hidden;background:var(--paper);min-height:0}
+.vg__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .8s var(--ease)}
+.vg__stage img.is-on{opacity:1;transform:none}
+.vg__cap{position:absolute;left:14px;bottom:14px;width:max-content;z-index:3;max-width:min(560px,calc(100% - 28px));padding:8px 12px 9px;background:rgba(28,18,16,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;transition:opacity .4s}
+.vg__cap b{display:block;font-family:var(--f-head);font-weight:500;font-size:14px;letter-spacing:.01em;line-height:1.3}
+.vg__cap span{display:block;margin-top:2px;font-size:11.5px;line-height:1.4;color:rgba(255,255,255,.78)}
+.vg__cap span:empty{display:none}
+.vg__count{position:absolute;right:14px;top:14px;z-index:3;padding:4px 8px;background:rgba(28,18,16,.62);font-family:var(--f-head);font-weight:500;font-size:10.5px;letter-spacing:.12em;color:#fff}.vg__count:empty{display:none}
+.vg__nav{position:absolute;top:50%;z-index:3;width:44px;height:44px;margin-top:-22px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(28,18,16,.45);color:#fff;cursor:pointer;transition:transform .3s,background .3s}.vg__nav:hover{background:rgba(28,18,16,.7)}
+.vg__nav:hover{transform:scale(1.12)}
+.vg__nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.3}
+.vg__prev{left:12px}.vg__next{right:12px}
+.vg__nav[hidden]{display:none}
+.vg__rail{min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:clamp(8px,1vh,12px);scroll-behavior:smooth;padding-right:2px}
+.vg__rail::-webkit-scrollbar{display:none}
+.vg__th{flex:0 0 auto;display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;color:var(--muted)}
+.vg__th i{display:block;aspect-ratio:4/3;overflow:hidden;background:var(--milk);outline:1px solid transparent;outline-offset:2px;transition:outline-color .3s}
+.vg__th img{width:100%;height:100%;object-fit:cover;object-position:50% 0;filter:grayscale(1);transition:filter .5s var(--ease),transform .9s var(--ease)}
+.vg__th small{display:block;margin-top:4px;font-family:var(--f-head);font-size:10.5px;line-height:1.25;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vg__th:hover img,.vg__th:focus-visible img,.vg__th[aria-current] img{filter:none}
+.vg__th:hover img{transform:scale(1.04)}
+.vg__th[aria-current] i{outline-color:var(--accent)}
+.vg__th[aria-current] small{color:var(--accent)}
+@media (max-width:767px){
+ .vg{height:auto;padding:72px 16px 32px}
+ .vg__grid{grid-template-columns:1fr;height:auto}
+ .vg__stage{aspect-ratio:4/3}
+ .vg__rail{flex-direction:row;overflow-x:auto;overflow-y:hidden}
+ .vg__th{width:110px}
+}
+@media (prefers-reduced-motion:reduce){.vg__stage img{transition:none;transform:none}}
+.plx + .vg{border-top:1px solid var(--line)}
+
 /* ---------- уменьшенное движение ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -2837,6 +2873,57 @@ function renderLand(){
   });
 }
 
+/* --- галерея остальных объектов (после Атриума): большое фото + вертикальная лента объектов --- */
+const OTHERS = [{"t": "Екатеринбургский Театр Юного Зрителя", "s": "Архитектурно-художественное освещение здания театра, открытого амфитеатра и территории · Реализация 2014 - 2015 гг.", "i": ["01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07"]}, {"t": "Реконструкция бульваров к ЧМ-2018 по футболу", "s": "Освещение бульваров, скверов и спортивной площадки скейт-парка · Реализация 2017 - 2018 гг.", "i": ["02-01", "02-02", "02-03", "02-04", "02-05", "02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20"]}, {"t": "Дворец Игровых Видов Спорта", "s": "Архитектурно-художественное освещение объекта · Реализация 2022 - 2023 гг.", "i": ["03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07", "03-08", "03-09", "03-10"]}, {"t": "Итальянские термы", "s": "Машук Аква-Терм, Железноводск · Освещение терм, бассейнов и интерьера спа-зоны · Реализация 2018 г.", "i": ["04-01", "04-02", "04-03", "04-04", "04-05", "04-06", "04-07", "04-08"]}, {"t": "Академия Schwarzkopf", "s": "Освещение интерьера учебного центра - салона Schwarzkopf Дизайнер Туркина Елена", "i": ["05-01", "05-02", "05-03", "05-04", "05-05", "05-06", "05-07", "05-08"]}, {"t": "Освещение интерьера двухуровневой квартиры", "s": "Реализация 2023", "i": ["06-01", "06-02", "06-03", "06-04", "06-05", "06-06", "06-07", "06-08", "06-09", "06-10", "06-11", "06-12", "06-13", "06-14", "06-15", "06-16"]}, {"t": "Жилой комплекс Антарес", "s": "Освещение фасадов, благоустройства и спорт площадки ЖК класса премиум · Реализация 2011 г.", "i": ["07-01", "07-02", "07-03", "07-04", "07-05", "07-06", "07-07", "07-08"]}, {"t": "Чапаевские бани", "s": "", "i": ["08-01"]}, {"t": "Гольф 2", "s": "", "i": ["09-01", "09-02", "09-03", "09-04", "09-05", "09-06", "09-07", "09-08", "09-09", "09-10", "09-11", "09-12", "09-13", "09-14"]}, {"t": "БЦ Архиерейский Чапаева", "s": "", "i": ["10-01", "10-02", "10-03"]}, {"t": "МРСК", "s": "", "i": ["11-01", "11-02"]}, {"t": "Офис Челябинск", "s": "", "i": ["12-01", "12-02", "12-03"]}, {"t": "Ривьера", "s": "", "i": ["13-01", "13-02", "13-03", "13-04", "13-05", "13-06", "13-07", "13-08"]}, {"t": "Ростов Платов", "s": "", "i": ["14-01", "14-02", "14-03"]}, {"t": "Сочи", "s": "", "i": ["15-01", "15-02", "15-03", "15-04", "15-05", "15-06"]}, {"t": "Тихвин и Галерея", "s": "", "i": ["16-01", "16-02", "16-03", "16-04", "16-05"]}, {"t": "Университет УГМК", "s": "", "i": ["17-01", "17-02", "17-03", "17-04"]}];
+function renderOthers(){
+  const box = $("#land"); if(!box || !OTHERS.length) return;
+  const sec = document.createElement("section");
+  sec.className = "vg"; sec.id = "p-others"; sec.setAttribute("data-stack",""); sec.setAttribute("data-flow",""); sec.setAttribute("aria-label","Другие объекты");
+  sec.innerHTML = `<div class="vg__grid">
+    <div class="vg__stage">
+      <span class="vg__count"></span>
+      <button class="vg__nav vg__prev" type="button" aria-label="Предыдущее фото"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="vg__nav vg__next" type="button" aria-label="Следующее фото"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="vg__cap"><b></b><span></span></div>
+    </div>
+    <nav class="vg__rail" aria-label="Объекты">${OTHERS.map((x,k) => `<button class="vg__th" type="button" data-k="${k}" title="${esc(x.t)}"><i><img src="${esc(ASSET)}projects/others/${x.i[0]}s.jpg" alt="" loading="lazy"></i><small>${esc(x.t)}</small></button>`).join("")}</nav>
+  </div>`;
+  box.appendChild(sec);
+  const stage = $(".vg__stage", sec), rail = $(".vg__rail", sec), src = n => ASSET + "projects/others/" + n + ".jpg";
+  let o = 0, p = 0, cur = null;
+  function show(k, i){
+    o = (k + OTHERS.length) % OTHERS.length; const L = OTHERS[o].i; p = (i + L.length) % L.length;
+    const im = new Image(); im.alt = OTHERS[o].t; im.decoding = "async"; im.src = src(L[p]);
+    const old = cur; cur = im; stage.insertBefore(im, stage.firstChild);
+    const on = () => requestAnimationFrame(() => { im.classList.add("is-on"); if(old){ old.classList.remove("is-on"); setTimeout(() => old.remove(), 700); } });
+    im.complete ? on() : (im.onload = on);
+    $(".vg__cap b", sec).textContent = OTHERS[o].t; $(".vg__cap span", sec).textContent = OTHERS[o].s;
+    $(".vg__count", sec).textContent = L.length > 1 ? pad(p+1) + " / " + pad(L.length) : "";
+    $$(".vg__th", rail).forEach((b,j) => j === o ? b.setAttribute("aria-current","true") : b.removeAttribute("aria-current"));
+    const a = rail.children[o];
+    if(a){ if(innerWidth < 768) rail.scrollTo({left: a.offsetLeft - 16, behavior:"smooth"}); else rail.scrollTo({top: a.offsetTop - rail.clientHeight/2 + a.clientHeight/2, behavior:"smooth"}); }
+    const n = p + 1 < L.length ? L[p+1] : OTHERS[(o+1) % OTHERS.length].i[0]; (new Image()).src = src(n);
+  }
+  function step(d){
+    const L = OTHERS[o].i;
+    if(d > 0) (p + 1 < L.length) ? show(o, p+1) : show(o+1, 0);
+    else (p > 0) ? show(o, p-1) : show(o-1, OTHERS[(o-1+OTHERS.length) % OTHERS.length].i.length - 1);
+  }
+  rail.addEventListener("click", e => { const b = e.target.closest(".vg__th"); if(b) show(+b.dataset.k, 0); });
+  $(".vg__prev", sec).addEventListener("click", () => step(-1));
+  $(".vg__next", sec).addEventListener("click", () => step(1));
+  document.addEventListener("keydown", e => {
+    if(e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    if($("#lb").classList.contains("is-open") || !sec.offsetParent) return;
+    const r = sec.getBoundingClientRect(); if(r.top > innerHeight/2 || r.bottom < innerHeight/2) return;
+    step(e.key === "ArrowRight" ? 1 : -1);
+  });
+  let x0 = null;
+  stage.addEventListener("pointerdown", e => { x0 = e.clientX; });
+  stage.addEventListener("pointerup", e => { if(x0 === null) return; const d = e.clientX - x0; x0 = null; if(Math.abs(d) > 40) step(d < 0 ? 1 : -1); });
+  show(0, 0);
+}
+
 /* --- о нас --- */
 function renderAbout(){
   $("#partnStrip").innerHTML = PARTNERS.map((c,i) => `<figure><div class="fr">${imgHTML(`about/partners/${pad(i+1)}.jpg`, L(c), L(c))}</div><figcaption class="cap"><span>${esc(L(c))}</span></figcaption></figure>`).join("");
@@ -2874,7 +2961,7 @@ function applyLang(lang){
   $('meta[name="description"]').content = t("meta.desc");
   $('meta[property="og:title"]').content = t("meta.title");
   $('meta[property="og:description"]').content = t("hero.title");
-  renderStatic(); renderDirs(); renderServices(); renderClients(); renderProjects(); renderLand(); renderAbout(); renderContacts();
+  renderStatic(); renderDirs(); renderServices(); renderClients(); renderProjects(); renderLand(); renderOthers(); renderAbout(); renderContacts();
   renderLaps(); lapsGo(lapsI); initFilm();
   /* фон второй страницы продолжает фото обложки (зеркально) */
   if($("#glowBg") && $("#heroImg img")) $("#glowBg").src = $("#heroImg img").src;
@@ -3070,6 +3157,10 @@ window.addEventListener("wheel", e => {
   if(!SNAP_DOWN || !FINE || innerWidth < 768 || e.ctrlKey) return;
   if(e.deltaY <= 0) return;                         /* вверх — как обычно */
   if(e.target.closest && e.target.closest(".lb.is-open, .menu.is-open, textarea, select")) return;
+  for(let n = e.target; n && n !== document.body && n.nodeType === 1; n = n.parentElement){
+    const oy = getComputedStyle(n).overflowY;
+    if((oy === "auto" || oy === "scroll") && n.scrollHeight > n.clientHeight + 1 && n.scrollTop + n.clientHeight < n.scrollHeight - 1) return;
+  }
   e.preventDefault();
   if(snapBusy || performance.now() < snapUntil) return;
   const y = scrollY, stops = snapStops();
