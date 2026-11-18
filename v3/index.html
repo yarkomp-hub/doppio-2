@@ -1827,9 +1827,17 @@ h1,h2,h3,h4{font-weight:300;letter-spacing:-.025em;line-height:1.08}
 #lb.is-project-gallery #lbImg img{cursor:pointer;touch-action:pan-y}
 #lb.is-project-gallery .lb__btn{background:rgba(12,9,8,.48);border-radius:50%}
 @media (min-width:951px){
-  .portfolio{min-height:100svh;padding-block:calc(var(--header-h) + 24px) 12px}
-  .portfolio__grid{grid-template-columns:repeat(3,minmax(0,1fr));padding-inline:clamp(10px,1.5vw,24px)}
-  .portfolio__photo{max-height:clamp(96px,calc(36svh - 154px),205px)}
+  .portfolio{min-height:100svh;padding-block:var(--header-h);border-top:0}
+  .portfolio__grid{
+    width:min(100%,clamp(850px,64.2vw,1280px));
+    height:calc(100svh - 2 * var(--header-h));
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-rows:repeat(2,minmax(88px,1fr) auto);
+    row-gap:0
+  }
+  .portfolio__grid > article{display:grid;grid-row:span 2;grid-template-rows:subgrid;min-width:0}
+  .portfolio__grid > article:nth-child(-n+3) .portfolio__body{padding-bottom:clamp(18px,2.6vh,26px)}
+  .portfolio__photo{height:100%;min-height:0;aspect-ratio:auto;contain:size}
 }
 @media (max-width:950px){
   .portfolio:not(:last-child){padding-bottom:clamp(22px,3.2vh,32px)}
@@ -3034,13 +3042,15 @@ if(HOME_ONLY){
   document.documentElement.classList.add("home-only");
 }
 function route(){
+  cancelAnimationFrame(snapFrame);
+  snapFrame = 0;
   if(HOME_ONLY && isOtherPage(location.hash)){ history.replaceState(null, "", "#/"); }
   const parts = location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
   let page = "home", target = null;
   if(parts[0]==="projects"){ page = "projects"; setFilter(parts[1] || "all"); }
   else if(parts[0]==="project" && parts[1]){ page = renderProjectPage(parts[1]) ? "project" : "projects"; }
   else if(parts[0]==="about") page = "about";
-  else if(parts[0]==="services" || parts[0]==="partners"){ page = "home"; target = parts[0]; }
+  else if(["directions","services","partners"].includes(parts[0])){ page = "home"; target = parts[0]; }
   else if(parts[0]==="contacts"){ page = PAGE || "home"; target = "contacts"; }
   else if(parts[0]==="main"){ page = PAGE || "home"; target = "main"; }
   const changed = page !== PAGE || page === "project";
@@ -3055,7 +3065,7 @@ function route(){
     if(page !== "project") document.title = t("meta.title");
     spinLogos();
     observeStacks(); layoutStacks();
-    if(!target) window.scrollTo(0,0);
+    if(!target) window.scrollTo({top:0,behavior:"instant"});
   }
   const nav = page === "project" ? "projects" : page;
   $$("[data-nav]").forEach(a => { if(a.dataset.nav===nav) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
@@ -3180,7 +3190,7 @@ function fitProjectsOnce(){
 window.addEventListener("resize", fitProjects);
 /* Листание экранами мышью/тачпадом. В сетке проектов также листаем назад. */
 const SNAP_DOWN = true;
-let snapBusy = false, snapUntil = 0;
+let snapFrame = 0;
 function snapStops(){
   const els = $$(".page.is-active > [data-stack], .page.is-active #land > [data-stack], #contacts, .ftr")
     .filter(el => (el.offsetParent || el.classList.contains("ftr")) && (innerWidth >= 951 || !el.classList.contains("portfolio")));
@@ -3188,17 +3198,16 @@ function snapStops(){
   return els.map(el => Math.min(max, Math.round(naturalTop(el)))).concat([max]).sort((a,b) => a-b);
 }
 function snapTo(y){
-  const y0 = scrollY, d = y - y0, T = 700, t0 = performance.now();
+  const y0 = scrollY, d = y - y0, duration = 360, started = performance.now();
   if(Math.abs(d) < 2) return;
-  snapBusy = true;
-  const de = document.documentElement, sb = de.style.scrollBehavior; de.style.scrollBehavior = "auto";
-  const ease = k => 1 - Math.pow(1 - k, 3);
-  (function step(now){
-    const k = Math.min(1, (now - t0) / T);
-    window.scrollTo(0, y0 + d * ease(k));
-    if(k < 1) requestAnimationFrame(step);
-    else { de.style.scrollBehavior = sb; snapBusy = false; snapUntil = performance.now() + 450; }
-  })(t0);
+  if(REDUCED){ window.scrollTo({top:y,behavior:"instant"}); return; }
+  function step(now){
+    const progress = Math.min(1, (now - started) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    window.scrollTo({top:y0 + d * eased,behavior:"instant"});
+    snapFrame = progress < 1 ? requestAnimationFrame(step) : 0;
+  }
+  snapFrame = requestAnimationFrame(step);
 }
 window.addEventListener("wheel", e => {
   if(!SNAP_DOWN || !FINE || innerWidth < 768 || e.ctrlKey) return;
@@ -3214,7 +3223,7 @@ window.addEventListener("wheel", e => {
     if((oy === "auto" || oy === "scroll") && (back ? n.scrollTop > 1 : n.scrollTop + n.clientHeight < n.scrollHeight - 1)) return;
   }
   e.preventDefault();
-  if(snapBusy || performance.now() < snapUntil) return;
+  if(snapFrame) return;
   const y = scrollY, stops = snapStops();
   let next = back ? stops.findLast(v => v < y - 4) : stops.find(v => v > y + 4);
   if(next === undefined) return;
@@ -3227,7 +3236,7 @@ window.addEventListener("keydown", e => {
   if(!["PageDown","ArrowDown"," "].includes(e.key)) return;
   if(e.target.closest && e.target.closest("input, textarea, select, button, .lb.is-open, .menu.is-open")) return;
   e.preventDefault();
-  if(snapBusy) return;
+  if(snapFrame) return;
   const y = scrollY, stops = snapStops();
   let next = stops.find(v => v > y + 4); if(next === undefined) return;
   if(next - y > innerHeight + 4) next = y + Math.round(innerHeight * .9);
@@ -3332,6 +3341,10 @@ function initForm(){
    ЗАПУСК
    ====================================================================== */
 document.addEventListener("click", e => {
+  const direction = e.target.closest("#dirsGrid a.dir");
+  if(direction && !e.defaultPrevented && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey){
+    history.replaceState(history.state, "", "#/directions");
+  }
   const g = e.target.closest("[data-gal]");
   if(g){ e.preventDefault(); lbOpen(g.dataset.gal, +g.dataset.i || 0); return; }
   const fb = e.target.closest("[data-filter]");
